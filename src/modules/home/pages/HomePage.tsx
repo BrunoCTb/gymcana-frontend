@@ -1,4 +1,6 @@
 import styles from './HomePage.module.css'
+import Card from '../../../components/ui/Card'
+import SectionHeader from '../../../components/ui/SectionHeader'
 
 function HomePage() {
   return (
@@ -12,32 +14,29 @@ function HomePage() {
       </section>
 
       <section className={styles.overview}>
-        <article className={styles.card}>
+        <Card>
           <span className={styles.cardLabel}>Nutrição</span>
           <strong className={styles.mainValue}>1.680 <small>kcal</small></strong>
           <div className={styles.progressTrack}>
             <div className={styles.progressFill} style={{ width: '65%' }} />
           </div>
           <span className={styles.supportText}>1.920 kcal restantes</span>
-        </article>
+        </Card>
 
-        <article className={styles.card}>
+        <Card>
           <span className={styles.cardLabel}>Treino</span>
           <strong className={styles.mainValue}>Upper A</strong>
           <span className={styles.status}>
             <span className={styles.statusDot} />
             Programado para hoje
           </span>
-        </article>
+        </Card>
       </section>
 
       <section className={styles.section}>
-        <div className={styles.sectionHeading}>
-          <h2>Seu treino</h2>
-          <span className={styles.sectionAction}>Ver rotina</span>
-        </div>
-
-        <article className={styles.card}>
+          <SectionHeader title="Seu treino" action="Ver rotina" />
+          
+        <Card>
           <div className={styles.workoutHeader}>
             <div>
               <span className={styles.cardLabel}>ROTINA DE HOJE</span>
@@ -52,16 +51,13 @@ function HomePage() {
             <span>•</span>
             <span>Volume moderado</span>
           </div>
-        </article>
+        </Card>
       </section>
 
       <section className={styles.section}>
-        <div className={styles.sectionHeading}>
-          <h2>Nutrição</h2>
-          <span className={styles.sectionAction}>Ver detalhes</span>
-        </div>
+        <SectionHeader title="Nutrição" action="Ver detalhes" />
 
-        <article className={styles.card}>
+        <Card>
           <div className={styles.nutritionHeader}>
             <div>
               <span className={styles.cardLabel}>CONSUMO DE HOJE</span>
@@ -88,26 +84,24 @@ function HomePage() {
               <strong>48 g</strong>
             </div>
           </div>
-        </article>
+        </Card>
       </section>
 
       <section className={styles.section}>
-        <div className={styles.sectionHeading}>
-          <h2>Outros indicadores</h2>
-        </div>
+        <SectionHeader title="Outros indicadores" />
 
         <div className={styles.secondaryGrid}>
-          <article className={styles.card}>
+          <Card>
             <span className={styles.cardLabel}>Hidratação</span>
             <strong className={styles.secondaryValue}>1,2 L</strong>
             <span className={styles.supportText}>de 2,5 L</span>
-          </article>
+          </Card>
 
-          <article className={styles.card}>
+          <Card>
             <span className={styles.cardLabel}>Peso atual</span>
             <strong className={styles.secondaryValue}>73,0 kg</strong>
             <span className={styles.supportText}>Último registro</span>
-          </article>
+          </Card>
         </div>
       </section>
     </div>
