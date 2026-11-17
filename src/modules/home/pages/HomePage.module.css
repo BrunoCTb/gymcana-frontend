@@ -1,0 +1,233 @@
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.eyebrow,
+.cardLabel {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.heading h1 {
+  margin: 8px 0;
+  font-size: clamp(25px, 4vw, 32px);
+  letter-spacing: -1.2px;
+}
+
+.heading p,
+.workoutHeader p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.overview,
+.secondaryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.mainValue {
+  display: block;
+  margin: 14px 0;
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.mainValue small {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.progressTrack {
+  width: 100%;
+  height: 7px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: var(--color-surface-elevated);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary);
+}
+
+.supportText {
+  display: block;
+  margin-top: 10px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionHeading h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.sectionAction {
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.workoutHeader,
+.nutritionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.workoutHeader h3 {
+  margin: 8px 0 5px;
+  font-size: 21px;
+}
+
+.workoutIcon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-elevated);
+  color: var(--color-primary);
+  font-size: 22px;
+}
+
+.workoutFooter {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.nutritionPercentage {
+  color: var(--color-primary);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.macroList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-border);
+}
+
+.macroList div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.macroList span {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.macroList strong {
+  font-size: 14px;
+}
+
+.secondaryValue {
+  display: block;
+  margin-top: 14px;
+  font-size: 23px;
+  letter-spacing: -0.5px;
+}
+
+@media (max-width: 600px) {
+  .page {
+    gap: 26px;
+  }
+
+  .overview {
+    gap: 10px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  .mainValue {
+    font-size: 23px;
+  }
+
+  .macroList {
+    gap: 8px;
+  }
+
+  .macroList span {
+    font-size: 10px;
+  }
+
+  .macroList strong {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 360px) {
+  .overview,
+  .secondaryGrid {
+    grid-template-columns: 1fr;
+  }
+}
