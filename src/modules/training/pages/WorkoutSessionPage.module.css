@@ -1,0 +1,536 @@
+
+.page {
+  width: min(100%, 680px);
+  min-height: calc(100vh - 48px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.iconButton {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.topInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.topInfo strong {
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.topInfo span {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.finishTextButton {
+  border: 0;
+  background: transparent;
+  color: #ef7777;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.progressArea {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.progressArea > span {
+  color: var(--color-text-muted);
+  font-size: 10px;
+  text-align: right;
+}
+
+.progressTrack {
+  height: 4px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--color-surface-elevated);
+}
+
+.progressTrack div {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary);
+  transition: width 180ms ease;
+}
+
+.focus {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.exerciseSelector {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 30px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+}
+
+.exerciseMenu {
+  position: absolute;
+  z-index: 5;
+  top: 38px;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  box-shadow: 0 12px 32px #0005;
+}
+
+.exerciseMenu button {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-text);
+  text-align: left;
+  font-size: 12px;
+}
+
+.exerciseMenu button span:last-child {
+  color: var(--color-text-muted);
+}
+
+.exerciseMenu button.selectedExercise {
+  background: var(--color-surface-elevated);
+  color: var(--color-primary);
+}
+
+.exerciseTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  text-align: center;
+}
+
+.exerciseTitle h1 {
+  margin: 0;
+  font-size: clamp(20px, 5vw, 26px);
+  letter-spacing: -0.8px;
+}
+
+.exerciseTitle span {
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.lastSetCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 13px 16px;
+}
+
+.lastSetCard > span {
+  color: var(--color-text-subtle);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.lastSetCard strong {
+  font-size: 14px;
+}
+
+.muted {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.currentSet {
+  display: flex;
+  flex: 1;
+  min-height: 200px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 24px 12px;
+  text-align: center;
+}
+
+.setEyebrow {
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.repTarget {
+  color: var(--color-primary);
+  font-size: clamp(64px, 16vw, 88px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.repLabel {
+  color: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.weightReference {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  color: var(--color-text-muted);
+}
+
+.weightReference strong {
+  color: var(--color-text);
+  font-size: 17px;
+}
+
+.weightReference span {
+  font-size: 11px;
+}
+
+.exerciseDone {
+  margin-top: 18px;
+  font-size: 19px;
+}
+
+.restCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-color: var(--color-primary);
+}
+
+.restCard > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.restCard span {
+  color: var(--color-text-muted);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.restCard strong {
+  font-size: 25px;
+  font-variant-numeric: tabular-nums;
+}
+
+.restCard button {
+  padding: 9px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 9px;
+  background: var(--color-surface-elevated);
+  color: var(--color-text);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.primaryButton {
+  display: flex;
+  width: 100%;
+  min-height: 50px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: #052e22;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.primaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.secondaryActions {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+}
+
+.secondaryActions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.bottomBar {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+.bottomBar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.bottomBar button:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.modalBackdrop {
+  position: fixed;
+  z-index: 30;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px;
+  background: #0009;
+}
+
+.modal,
+.confirmModal {
+  width: min(100%, 460px);
+  padding: 22px;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 18px 60px #0006;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modalHeader h2,
+.confirmModal h2 {
+  margin: 5px 0 0;
+  font-size: 21px;
+  letter-spacing: -0.5px;
+}
+
+.eyebrow {
+  color: var(--color-primary);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.modalDescription,
+.confirmModal p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.formFields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.formFields label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.numberControl {
+  display: flex;
+  height: 48px;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface-elevated);
+}
+
+.numberControl button {
+  display: grid;
+  width: 36px;
+  height: 100%;
+  flex: 0 0 36px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+}
+
+.numberControl input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--color-text);
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.confirmModal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cancelButton {
+  min-height: 42px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.finishedCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-top: 40px;
+  padding: 32px 20px;
+  text-align: center;
+}
+
+.finishedIcon {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--color-surface-elevated);
+  color: var(--color-primary);
+}
+
+.finishedCard h1 {
+  margin: 0;
+  font-size: 27px;
+}
+
+.finishedCard p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.summary {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.summary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 16px 8px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-elevated);
+}
+
+.summary strong {
+  font-size: 20px;
+}
+
+.summary span {
+  color: var(--color-text-muted);
+  font-size: 10px;
+}
+
+@media (max-width: 600px) {
+  .page {
+    min-height: calc(100dvh - 40px);
+    gap: 17px;
+  }
+
+  .focus {
+    gap: 17px;
+  }
+
+  .currentSet {
+    min-height: 180px;
+  }
+
+  .modalBackdrop {
+    padding: 10px;
+  }
+
+  .modal,
+  .confirmModal {
+    padding: 20px;
+  }
+}

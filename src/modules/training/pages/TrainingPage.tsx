@@ -2,6 +2,7 @@
 import Card from '../../../components/ui/Card'
 import SectionHeader from '../../../components/ui/SectionHeader'
 import styles from './TrainingPage.module.css'
+import { Link } from 'react-router'
 
 const exercises = [
   {
@@ -45,6 +46,9 @@ function TrainingPage() {
   return (
     <div className={styles.page}>
       <section className={styles.heading}>
+        <Link to="/training/session">
+          Iniciar treino
+        </Link>
         <div>
           <span className={styles.eyebrow}>SEU TREINAMENTO</span>
           <h1>Treino</h1>

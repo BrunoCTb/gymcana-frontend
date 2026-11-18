@@ -5,6 +5,7 @@ import NotFoundPage from '../../modules/home/pages/NotFoundPage'
 import TrainingPage from '../../modules/training/pages/TrainingPage'
 import NutritionPage from '../../modules/nutrition/pages/NutritionPage'
 import ProgressPage from '../../modules/progress/pages/ProgressPage'
+import WorkoutSessionPage from '../../modules/training/pages/WorkoutSessionPage'
 
 function AppRouter() {
   return (
@@ -26,6 +27,10 @@ function AppRouter() {
           <Route 
             path="/progress" 
             element={<ProgressPage />} 
+          />
+          <Route 
+            path="/training/session" 
+            element={<WorkoutSessionPage />}
           />
         </Route>
         <Route path="*" element={<NotFoundPage />} />

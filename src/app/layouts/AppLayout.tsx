@@ -1,11 +1,15 @@
+
 import { useEffect, useState } from 'react'
-import { Link, Outlet } from 'react-router'
+import { Link, Outlet, useLocation } from 'react-router'
 import MainNavigation from '../../components/navigation/MainNavigation'
 import styles from './AppLayout.module.css'
 
 type Theme = 'dark' | 'light'
 
 function AppLayout() {
+  const location = useLocation()
+  const isWorkoutSession = location.pathname === '/training/session'
+
   const [theme, setTheme] = useState<Theme>(() => {
     const savedTheme = localStorage.getItem('gymcana-theme')
     return savedTheme === 'light' ? 'light' : 'dark'
@@ -22,25 +26,29 @@ function AppLayout() {
 
   return (
     <div className={styles.app}>
-      <header className={styles.header}>
-        <Link to="/" className={styles.brand}>
-          <span className={styles.brandMark}>G</span>
-          <span>Gymcana</span>
-        </Link>
+      {!isWorkoutSession && (
+        <>
+          <header className={styles.header}>
+            <Link to="/" className={styles.brand}>
+              <span className={styles.brandMark}>G</span>
+              <span>Gymcana</span>
+            </Link>
 
-        <button
-          type="button"
-          className={styles.themeButton}
-          onClick={toggleTheme}
-          aria-label={`Ativar tema ${theme === 'dark' ? 'claro' : 'escuro'}`}
-        >
-          {theme === 'dark' ? '☀' : '☾'}
-        </button>
-      </header>
+            <button
+              type="button"
+              className={styles.themeButton}
+              onClick={toggleTheme}
+              aria-label={`Ativar tema ${theme === 'dark' ? 'claro' : 'escuro'}`}
+            >
+              {theme === 'dark' ? '☀' : '☾'}
+            </button>
+          </header>
 
-      <MainNavigation />
+          <MainNavigation />
+        </>
+      )}
 
-      <main className={styles.main}>
+      <main className={isWorkoutSession ? styles.sessionMain : styles.main}>
         <Outlet />
       </main>
     </div>

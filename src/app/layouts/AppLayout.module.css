@@ -55,10 +55,21 @@
   padding: 32px 0 48px;
 }
 
+.sessionMain {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 24px;
+}
+
 @media (max-width: 600px) {
   .main {
     width: min(100% - 32px, 1080px);
     padding-top: 24px;
     padding-bottom: 100px;
+  }
+
+  .sessionMain {
+    padding: 16px 16px calc(24px + env(safe-area-inset-bottom));
   }
 }
