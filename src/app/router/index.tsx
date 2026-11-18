@@ -2,9 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router'
 import AppLayout from '../layouts/AppLayout'
 import HomePage from '../../modules/home/pages/HomePage'
 import NotFoundPage from '../../modules/home/pages/NotFoundPage'
-import PlaceholderPage from '../../modules/home/pages/PlaceholderPage'
 import TrainingPage from '../../modules/training/pages/TrainingPage'
-import NutritionPage from '../../modules/nutrition/pages/NutritionPage' 
+import NutritionPage from '../../modules/nutrition/pages/NutritionPage'
+import ProgressPage from '../../modules/progress/pages/ProgressPage'
 
 function AppRouter() {
   return (
@@ -23,9 +23,9 @@ function AppRouter() {
             path="/nutrition" 
             element={<NutritionPage />} 
           />
-          <Route
-            path="/progress"
-            element={<PlaceholderPage title="Evolução" />}
+          <Route 
+            path="/progress" 
+            element={<ProgressPage />} 
           />
         </Route>
         <Route path="*" element={<NotFoundPage />} />

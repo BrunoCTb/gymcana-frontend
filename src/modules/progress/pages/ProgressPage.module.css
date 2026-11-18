@@ -1,0 +1,264 @@
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.heading h1 {
+  margin: 4px 0 6px;
+  font-size: 28px;
+  letter-spacing: -1px;
+}
+
+.heading p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.eyebrow {
+  color: var(--color-primary);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.overview {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 14px;
+}
+
+.weightCard,
+.summaryCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weightValue {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.weightValue strong {
+  font-size: 32px;
+  letter-spacing: -1.5px;
+}
+
+.weightValue span {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.cardLabel {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.variation {
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.summaryCard > strong {
+  font-size: 24px;
+  letter-spacing: -0.5px;
+}
+
+.muted {
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chartCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.chartHeader > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.chartValue {
+  font-size: 22px;
+  letter-spacing: -0.5px;
+}
+
+.periodSelector {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 9px;
+  background: var(--color-surface-elevated);
+}
+
+.periodSelector button {
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.periodSelector button.activePeriod {
+  background: var(--color-primary);
+  color: #052e22;
+}
+
+.chart {
+  width: 100%;
+  height: 230px;
+}
+
+.chartNote {
+  margin: 0;
+  color: var(--color-text-subtle);
+  font-size: 11px;
+}
+
+.measurementsCard,
+.historyCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.measurementRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.measurementRow:first-child {
+  padding-top: 0;
+}
+
+.measurementRow:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.measurementRow > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.measurementRow > div strong,
+.historyContent strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.measurementRow > div span,
+.historyContent span {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.measurementValue {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.historyRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.historyRow:first-child {
+  padding-top: 0;
+}
+
+.historyRow:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.historyMarker {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 9px;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+
+.historyContent {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.historyRow time {
+  color: var(--color-text-subtle);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .page {
+    gap: 24px;
+  }
+
+  .heading h1 {
+    font-size: 25px;
+  }
+
+  .overview {
+    gap: 10px;
+  }
+
+  .weightValue strong {
+    font-size: 28px;
+  }
+
+  .chartCard {
+    padding: 16px;
+  }
+
+  .chart {
+    height: 210px;
+  }
+
+  .periodSelector button {
+    padding: 6px;
+    font-size: 10px;
+  }
+
+  .historyRow {
+    gap: 9px;
+  }
+
+  .historyRow time {
+    font-size: 10px;
+  }
+}
