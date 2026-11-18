@@ -4,6 +4,7 @@ import HomePage from '../../modules/home/pages/HomePage'
 import NotFoundPage from '../../modules/home/pages/NotFoundPage'
 import PlaceholderPage from '../../modules/home/pages/PlaceholderPage'
 import TrainingPage from '../../modules/training/pages/TrainingPage'
+import NutritionPage from '../../modules/nutrition/pages/NutritionPage' 
 
 function AppRouter() {
   return (
@@ -18,9 +19,9 @@ function AppRouter() {
             path="/training" 
             element={<TrainingPage />} 
           />
-          <Route
-            path="/nutrition"
-            element={<PlaceholderPage title="Dieta" />}
+          <Route 
+            path="/nutrition" 
+            element={<NutritionPage />} 
           />
           <Route
             path="/progress"

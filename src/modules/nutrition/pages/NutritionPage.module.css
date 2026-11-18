@@ -1,0 +1,262 @@
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.heading h1 {
+  margin: 8px 0;
+  font-size: clamp(25px, 4vw, 32px);
+  letter-spacing: -1.2px;
+}
+
+.heading p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.eyebrow,
+.cardLabel {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.calorieHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.calorieValue {
+  display: block;
+  margin: 10px 0 2px;
+  font-size: 34px;
+  letter-spacing: -1.5px;
+}
+
+.calorieGoal {
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.percentage {
+  color: var(--color-primary);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.progressTrack,
+.macroTrack {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: var(--color-surface-elevated);
+}
+
+.progressTrack {
+  margin-top: 22px;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary);
+}
+
+.remaining {
+  display: block;
+  margin-top: 10px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.macros {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+}
+
+.macros > div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.macroName {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.macros strong {
+  font-size: 17px;
+}
+
+.macros > div > span:nth-of-type(2) {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.macroTrack {
+  height: 5px;
+  margin-top: 3px;
+}
+
+.macroTrack div {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary);
+}
+
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 4px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+.day span {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.day strong {
+  color: var(--color-text);
+  font-size: 15px;
+}
+
+.selectedDay {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
+}
+
+.selectedDay span,
+.selectedDay strong {
+  color: var(--color-primary);
+}
+
+.mealList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mealButton {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  text-align: left;
+}
+
+.mealInfo,
+.mealSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mealInfo strong {
+  font-size: 14px;
+}
+
+.mealInfo span,
+.mealSummary span {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.mealSummary {
+  align-items: flex-end;
+}
+
+.mealSummary strong {
+  font-size: 13px;
+}
+
+.mealSummary span {
+  font-size: 18px;
+}
+
+.foodList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.food {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.food > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.food strong {
+  font-size: 12px;
+}
+
+.food span {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+@media (max-width: 500px) {
+  .page {
+    gap: 26px;
+  }
+
+  .macros {
+    gap: 9px;
+  }
+
+  .macros strong {
+    font-size: 15px;
+  }
+
+  .week {
+    gap: 5px;
+  }
+
+  .day {
+    padding: 10px 2px;
+  }
+}
