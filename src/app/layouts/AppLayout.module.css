@@ -56,13 +56,9 @@
 }
 
 @media (max-width: 600px) {
-  .header {
-    height: 60px;
-    padding: 0 16px;
-  }
-
   .main {
     width: min(100% - 32px, 1080px);
     padding-top: 24px;
+    padding-bottom: 100px;
   }
 }
