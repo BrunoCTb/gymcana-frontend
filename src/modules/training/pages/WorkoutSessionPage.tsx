@@ -18,6 +18,7 @@ import {
 } from '../data/trainingStorage'
 import Card from '../../../components/ui/Card'
 import styles from './WorkoutSessionPage.module.css'
+import { saveCompletedWorkout } from '../data/trainingHistory'
 
 type SetStatus = 'pending' | 'completed' | 'skipped'
 
@@ -250,7 +251,7 @@ function WorkoutSessionPage() {
   }
 
   function finishWorkout() {
-    localStorage.removeItem(STORAGE_KEY)
+    saveCompletedWorkout(session)
     setFinished(true)
     setShowFinish(false)
   }
