@@ -70,6 +70,7 @@ function RoutineEditorPage() {
   function addExercise(exercise: LibraryExercise) {
     const newExercise: RoutineExercise = {
       id: crypto.randomUUID(),
+      exerciseId: exercise.id,
       name: exercise.name,
       muscle: exercise.muscle,
       targetReps: reps,

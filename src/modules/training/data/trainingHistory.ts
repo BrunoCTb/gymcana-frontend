@@ -1,8 +1,11 @@
+import { getRoutines } from './trainingStorage'
+import { getExerciseLibrary } from './exerciseLibrary'
 
 export type WorkoutSetStatus = 'pending' | 'completed' | 'skipped'
 
 export type WorkoutHistoryEntry = {
   id: string
+  exerciseId?: string
   routineId: string
   routineName: string
   completedAt: string
@@ -12,6 +15,7 @@ export type WorkoutHistoryEntry = {
   skippedSets: number
   exercises: {
     id: number
+    exerciseId?: string
     name: string
     muscle: string
     targetReps: string
@@ -34,7 +38,55 @@ export function getWorkoutHistory(): WorkoutHistoryEntry[] {
 
     const parsed = JSON.parse(saved)
 
-    return Array.isArray(parsed) ? parsed : []
+    if (!Array.isArray(parsed)) return []
+
+    const routines = getRoutines()
+    const library = getExerciseLibrary()
+
+    let changed = false
+
+    const normalized = (parsed as WorkoutHistoryEntry[]).map((workout) => {
+      const routine = routines.find(
+        (item) => item.id === workout.routineId,
+      )
+
+      return {
+        ...workout,
+        exercises: workout.exercises.map((exercise) => {
+          if (exercise.exerciseId) return exercise
+
+          const routineExercise = routine?.exercises.find(
+            (item) =>
+              item.name === exercise.name &&
+              item.muscle === exercise.muscle,
+          )
+
+          const libraryExercise = library.find(
+            (item) =>
+              item.name.trim().toLowerCase() === exercise.name.trim().toLowerCase() &&
+              item.muscle.trim().toLowerCase() === exercise.muscle.trim().toLowerCase(),
+          )
+
+          const exerciseId =
+            routineExercise?.exerciseId ?? libraryExercise?.id
+
+          if (!exerciseId) return exercise
+
+          changed = true
+
+          return {
+            ...exercise,
+            exerciseId,
+          }
+        }),
+      }
+    })
+
+    if (changed) {
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(normalized))
+    }
+
+    return normalized
   } catch {
     return []
   }

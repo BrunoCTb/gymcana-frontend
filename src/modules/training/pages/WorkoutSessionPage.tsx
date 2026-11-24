@@ -31,6 +31,7 @@ type WorkoutSet = {
 
 type Exercise = {
   id: number
+  exerciseId: string
   name: string
   muscle: string
   targetReps: string
@@ -59,6 +60,7 @@ function createInitialSession(): SessionState {
     routineName: routine.name,
     exercises: routine.exercises.map((exercise, index) => ({
       id: index + 1,
+      exerciseId: exercise.exerciseId,
       name: exercise.name,
       muscle: exercise.muscle,
       targetReps: exercise.targetReps,
@@ -93,6 +95,19 @@ function loadSession(): SessionState {
           currentExerciseIndex: parsed.currentExerciseIndex ?? 0,
           elapsedSeconds: parsed.elapsedSeconds ?? 0,
           restSeconds: parsed.restSeconds ?? 0,
+          exercises: parsed.exercises.map((exercise) => {
+            const matchingExercise = routine?.exercises.find(
+              (item) =>
+                item.name === exercise.name &&
+                item.muscle === exercise.muscle,
+            )
+
+            return {
+              ...exercise,
+              exerciseId:
+                exercise.exerciseId ?? matchingExercise?.exerciseId ?? '',
+            }
+          }),
         } as SessionState
       }
     }
