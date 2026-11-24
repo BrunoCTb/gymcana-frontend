@@ -9,6 +9,7 @@ import WorkoutSessionPage from '../../modules/training/pages/WorkoutSessionPage'
 import RoutineEditorPage from '../../modules/training/pages/RoutineEditorPage'
 import ExerciseHistoryPage from '../../modules/progress/pages/ExerciseHistoryPage'
 import WorkoutHistoryPage from '../../modules/progress/pages/WorkoutHistoryPage'
+import ExerciseHistoryDetailPage from '../../modules/progress/pages/ExerciseHistoryDetailPage'
 
 function AppRouter() {
   return (
@@ -46,6 +47,10 @@ function AppRouter() {
           <Route
             path="/progress/workouts"
             element={<WorkoutHistoryPage />}
+          />
+          <Route
+            path="/progress/exercises/:exerciseId"
+            element={<ExerciseHistoryDetailPage />}
           />
         </Route>
         <Route path="*" element={<NotFoundPage />} />

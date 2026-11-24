@@ -1,0 +1,134 @@
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  margin-bottom: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.eyebrow {
+  color: var(--color-primary);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.heading h1 {
+  margin: 0;
+  font-size: 27px;
+  letter-spacing: -1px;
+}
+
+.heading p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.summary > * {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.summary span {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.summary strong {
+  font-size: 17px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.section h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.record {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.recordHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.recordHeader > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.recordHeader strong {
+  font-size: 13px;
+}
+
+.recordHeader span {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.setList {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+.set {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.set > span:first-child {
+  color: var(--color-text-muted);
+}
+
+.set strong {
+  font-size: 12px;
+}
+
+.uncompleted {
+  color: var(--color-text-subtle);
+  font-size: 11px;
+}
