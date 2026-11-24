@@ -1,0 +1,96 @@
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.heading h1 {
+  margin: 4px 0 6px;
+  font-size: 28px;
+  letter-spacing: -1px;
+}
+
+.heading p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.eyebrow {
+  color: var(--color-primary);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.exercise {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.exercise:first-child {
+  padding-top: 0;
+}
+
+.exercise:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.exerciseInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.exerciseInfo strong {
+  font-size: 14px;
+}
+
+.exerciseInfo span {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.exercise > svg {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+}
+
+.empty {
+  padding: 8px 0;
+}
+
+.empty strong {
+  font-size: 14px;
+}
+
+.empty p {
+  margin: 6px 0 0;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}

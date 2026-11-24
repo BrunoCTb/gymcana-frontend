@@ -1,5 +1,4 @@
-
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   CartesianGrid,
   Line,
@@ -12,9 +11,12 @@ import {
 import Card from '../../../components/ui/Card'
 import SectionHeader from '../../../components/ui/SectionHeader'
 import styles from './ProgressPage.module.css'
+import { useNavigate } from 'react-router'
 import { ChevronDown } from 'lucide-react'
 import {
   getWorkoutHistory,
+  getExercisesWithHistory,
+  getExerciseHistory,
   type WorkoutHistoryEntry,
 } from '../../training/data/trainingHistory'
 
@@ -55,6 +57,33 @@ function ProgressPage() {
   const [period, setPeriod] = useState<Period>('1M')
   const [workoutHistory] = useState<WorkoutHistoryEntry[]>(getWorkoutHistory)
   const [expandedWorkout, setExpandedWorkout] = useState<string | null>(null)
+  const navigate = useNavigate()
+
+  const exercisePreview = useMemo(() => {
+    return getExercisesWithHistory()
+      .slice(0, 2)
+      .map((exercise) => {
+        const records = getExerciseHistory(exercise.exerciseId)
+        const latest = records[0]
+
+        const completedSets =
+          latest?.sets.filter((set) => set.status === 'completed') ?? []
+
+        const bestSet = completedSets.reduce<
+          (typeof completedSets)[number] | null
+        >(
+          (best, set) =>
+            !best || set.weight > best.weight ? set : best,
+          null,
+        )
+
+        return {
+          ...exercise,
+          latestRoutine: latest?.routineName,
+          latestWeight: bestSet?.weight,
+        }
+      })
+  }, [])
 
   return (
     <div className={styles.page}>
@@ -169,11 +198,67 @@ function ProgressPage() {
       </section>
 
       <section className={styles.section}>
-        <SectionHeader title="Histórico de treinos" />
+        <div className={styles.exerciseHistoryHeader}>
+          <SectionHeader title="Histórico de exercícios" />
+
+          <button
+            type="button"
+            onClick={() => navigate('/progress/exercises')}
+          >
+            Ver todos
+          </button>
+        </div>
+
+        <Card className={styles.exercisePreviewCard}>
+          {exercisePreview.length > 0 ? (
+            exercisePreview.map((exercise) => (
+              <div
+                className={styles.exercisePreviewItem}
+                key={exercise.exerciseId}
+              >
+                <div>
+                  <strong>{exercise.name}</strong>
+                  <span>
+                    {exercise.muscle}
+                    {exercise.latestRoutine
+                      ? ` · ${exercise.latestRoutine}`
+                      : ''}
+                  </span>
+                </div>
+
+                <strong>
+                  {exercise.latestWeight != null
+                    ? `${exercise.latestWeight} kg`
+                    : 'Sem séries concluídas'}
+                </strong>
+              </div>
+            ))
+          ) : (
+            <div className={styles.emptyHistory}>
+              <span>Nenhum exercício registrado ainda.</span>
+              <p>
+                Seus exercícios aparecerão aqui após a conclusão dos treinos.
+              </p>
+            </div>
+          )}
+        </Card>
+      </section>
+
+      <section className={styles.section}>
+        <div className={styles.exerciseHistoryHeader}>
+          <SectionHeader title="Histórico de treinos" />
+
+          <button
+            type="button"
+            onClick={() => navigate('/progress/workouts')}
+          >
+            Ver todos
+          </button>
+        </div>
 
         <Card className={styles.workoutHistoryCard}>
           {workoutHistory.length > 0 ? (
-            workoutHistory.map((workout) => {
+            workoutHistory.slice(0, 2).map((workout) => {
               const isExpanded = expandedWorkout === workout.id
 
               return (

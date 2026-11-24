@@ -5,7 +5,7 @@ export type WorkoutSetStatus = 'pending' | 'completed' | 'skipped'
 
 export type WorkoutHistoryEntry = {
   id: string
-  exerciseId?: string
+  // exerciseId?: string
   routineId: string
   routineName: string
   completedAt: string
@@ -138,3 +138,92 @@ export function saveCompletedWorkout(session: CompletedWorkoutInput) {
 
   return entry
 }
+
+
+
+export type ExerciseHistorySummary = {
+  exerciseId: string
+  name: string
+  muscle: string
+  workoutCount: number
+  lastPerformedAt: string
+}
+
+export type ExerciseHistoryRecord = {
+  workoutId: string
+  routineName: string
+  completedAt: string
+  sets: WorkoutHistoryEntry['exercises'][number]['sets']
+}
+
+
+export function getExercisesWithHistory(): ExerciseHistorySummary[] {
+  const history = getWorkoutHistory()
+  const exercises = new Map<string, ExerciseHistorySummary>()
+
+  history.forEach((workout) => {
+    const seenInWorkout = new Set<string>()
+
+    workout.exercises.forEach((exercise) => {
+      if (!exercise.exerciseId || seenInWorkout.has(exercise.exerciseId)) {
+        return
+      }
+
+      seenInWorkout.add(exercise.exerciseId)
+
+      const existing = exercises.get(exercise.exerciseId)
+
+      if (existing) {
+        existing.workoutCount += 1
+
+        if (
+          new Date(workout.completedAt) >
+          new Date(existing.lastPerformedAt)
+        ) {
+          existing.lastPerformedAt = workout.completedAt
+        }
+
+        return
+      }
+
+      exercises.set(exercise.exerciseId, {
+        exerciseId: exercise.exerciseId,
+        name: exercise.name,
+        muscle: exercise.muscle,
+        workoutCount: 1,
+        lastPerformedAt: workout.completedAt,
+      })
+    })
+  })
+
+  return Array.from(exercises.values()).sort(
+    (a, b) =>
+      new Date(b.lastPerformedAt).getTime() -
+      new Date(a.lastPerformedAt).getTime(),
+  )
+}
+
+export function getExerciseHistory(
+  exerciseId: string,
+): ExerciseHistoryRecord[] {
+  return getWorkoutHistory()
+    .filter((workout) =>
+      workout.exercises.some(
+        (exercise) => exercise.exerciseId === exerciseId,
+      ),
+    )
+    .map((workout) => {
+      const exercise = workout.exercises.find(
+        (item) => item.exerciseId === exerciseId,
+      )!
+
+      return {
+        workoutId: workout.id,
+        routineName: workout.routineName,
+        completedAt: workout.completedAt,
+        sets: exercise.sets,
+      }
+    })
+}
+
+

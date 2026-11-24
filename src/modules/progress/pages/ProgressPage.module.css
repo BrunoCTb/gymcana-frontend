@@ -396,3 +396,25 @@
   font-size: 12px;
   line-height: 1.6;
 }
+
+.exerciseHistoryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.exerciseHistoryHeader button {
+  border: 0;
+  padding: 4px 0;
+  background: transparent;
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.exercisePreviewCard {
+  display: flex;
+  flex-direction: column;
+}

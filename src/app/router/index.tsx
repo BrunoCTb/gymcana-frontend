@@ -7,6 +7,8 @@ import NutritionPage from '../../modules/nutrition/pages/NutritionPage'
 import ProgressPage from '../../modules/progress/pages/ProgressPage'
 import WorkoutSessionPage from '../../modules/training/pages/WorkoutSessionPage'
 import RoutineEditorPage from '../../modules/training/pages/RoutineEditorPage'
+import ExerciseHistoryPage from '../../modules/progress/pages/ExerciseHistoryPage'
+import WorkoutHistoryPage from '../../modules/progress/pages/WorkoutHistoryPage'
 
 function AppRouter() {
   return (
@@ -36,6 +38,14 @@ function AppRouter() {
           <Route 
           path="/training/routines/:routineId" 
           element={<RoutineEditorPage />}
+          />
+          <Route
+            path="/progress/exercises"
+            element={<ExerciseHistoryPage />}
+          />
+          <Route
+            path="/progress/workouts"
+            element={<WorkoutHistoryPage />}
           />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
