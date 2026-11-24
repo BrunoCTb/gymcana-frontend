@@ -140,6 +140,76 @@
   font-size: 10px;
 }
 
+.headingActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.actionButton:hover {
+  transform: translateY(-1px);
+}
+
+.primaryAction {
+  background: var(--color-primary);
+  color: #052e22;
+}
+
+.primaryAction:hover {
+  background: var(--color-primary-hover);
+}
+
+.secondaryAction,
+.editAction {
+  border-color: var(--color-border);
+  background: var(--color-surface-elevated);
+  color: var(--color-text);
+}
+
+.secondaryAction:hover,
+.editAction:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.disabledAction {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  color: var(--color-text-subtle);
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .headingActions {
+    width: 100%;
+  }
+
+  .headingActions .actionButton {
+    flex: 1;
+  }
+}
+
 @media (max-width: 400px) {
   .exercise {
     gap: 9px;

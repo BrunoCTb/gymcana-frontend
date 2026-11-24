@@ -1,6 +1,7 @@
 
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { Plus, Play, Pencil } from 'lucide-react'
 import Card from '../../../components/ui/Card'
 import SectionHeader from '../../../components/ui/SectionHeader'
 import {
@@ -31,16 +32,30 @@ function TrainingPage() {
           <p>Gerencie suas rotinas e acompanhe sua evolução.</p>
         </div>
 
-        {selectedRoutine.exercises.length > 0 ? (
+        <div className={styles.headingActions}>
           <Link
-            to="/training/session"
-            onClick={() => setSelectedRoutineId(selectedRoutine.id)}
+            to="/training/routines/new"
+            className={`${styles.actionButton} ${styles.secondaryAction}`}
           >
-            Iniciar treino
+            <Plus size={17} />
+            Criar rotina
           </Link>
-        ) : (
-          <span>Adicione exercícios para iniciar</span>
-        )}
+
+          {selectedRoutine.exercises.length > 0 ? (
+            <Link
+              to="/training/session"
+              onClick={() => setSelectedRoutineId(selectedRoutine.id)}
+              className={`${styles.actionButton} ${styles.primaryAction}`}
+            >
+              <Play size={17} />
+              Iniciar treino
+            </Link>
+          ) : (
+            <span className={styles.disabledAction}>
+              Adicione exercícios para iniciar
+            </span>
+          )}
+        </div>
       </section>
 
       <section className={styles.section}>
@@ -99,6 +114,14 @@ function TrainingPage() {
 
       <section className={styles.section}>
         <SectionHeader title={selectedRoutine.name} />
+
+        <Link
+          to={`/training/routines/${selectedRoutine.id}`}
+          className={`${styles.actionButton} ${styles.editAction}`}
+        >
+          <Pencil size={15} />
+          Editar rotina
+        </Link>
 
         {selectedRoutine.exercises.length > 0 ? (
           <div className={styles.exerciseList}>
