@@ -1,130 +1,137 @@
 
+import { useState } from 'react'
+import { Link } from 'react-router'
 import Card from '../../../components/ui/Card'
 import SectionHeader from '../../../components/ui/SectionHeader'
+import {
+  getRoutines,
+  getSelectedRoutineId,
+  setSelectedRoutineId,
+} from '../data/trainingStorage'
 import styles from './TrainingPage.module.css'
-import { Link } from 'react-router'
-
-const exercises = [
-  {
-    name: 'Supino inclinado com halteres',
-    muscle: 'Peito superior',
-    sets: '3 séries',
-    reps: '8–12 reps',
-    load: '22 kg',
-  },
-  {
-    name: 'Puxada alta aberta',
-    muscle: 'Costas',
-    sets: '3 séries',
-    reps: '8–12 reps',
-    load: '45 kg',
-  },
-  {
-    name: 'Desenvolvimento máquina',
-    muscle: 'Ombros',
-    sets: '3 séries',
-    reps: '8–12 reps',
-    load: '30 kg',
-  },
-  {
-    name: 'Rosca Scott',
-    muscle: 'Bíceps',
-    sets: '3 séries',
-    reps: '8–12 reps',
-    load: '20 kg',
-  },
-  {
-    name: 'Tríceps corda',
-    muscle: 'Tríceps',
-    sets: '3 séries',
-    reps: '10–12 reps',
-    load: '25 kg',
-  },
-]
 
 function TrainingPage() {
+  const [routines] = useState(getRoutines)
+  const [selectedId, setSelectedId] = useState(getSelectedRoutineId)
+
+  const selectedRoutine =
+    routines.find((routine) => routine.id === selectedId) ?? routines[0]
+
+  function selectRoutine(id: string) {
+    setSelectedId(id)
+    setSelectedRoutineId(id)
+  }
+
   return (
     <div className={styles.page}>
       <section className={styles.heading}>
-        <Link to="/training/session">
-          Iniciar treino
-        </Link>
         <div>
           <span className={styles.eyebrow}>SEU TREINAMENTO</span>
           <h1>Treino</h1>
           <p>Gerencie suas rotinas e acompanhe sua evolução.</p>
         </div>
+
+        {selectedRoutine.exercises.length > 0 ? (
+          <Link
+            to="/training/session"
+            onClick={() => setSelectedRoutineId(selectedRoutine.id)}
+          >
+            Iniciar treino
+          </Link>
+        ) : (
+          <span>Adicione exercícios para iniciar</span>
+        )}
       </section>
 
       <section className={styles.section}>
         <SectionHeader title="Minhas rotinas" />
 
         <div className={styles.routineList}>
-          <Card>
-            <div className={styles.routineHeader}>
-              <div>
-                <span className={styles.activeLabel}>ROTINA ATUAL</span>
-                <h2>Upper A</h2>
-                <p>Peito, costas, ombros e braços</p>
-              </div>
-              <span className={styles.routineBadge}>A</span>
-            </div>
+          {routines.map((routine, index) => {
+            const isSelected = routine.id === selectedId
 
-            <div className={styles.routineFooter}>
-              <span>8 exercícios</span>
-              <span>•</span>
-              <span>Treino superior</span>
-            </div>
-          </Card>
+            return (
+              <Card
+                key={routine.id}
+                style={{
+                  borderColor: isSelected
+                    ? 'var(--color-primary)'
+                    : undefined,
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => selectRoutine(routine.id)}
+                  style={{
+                    width: '100%',
+                    padding: 0,
+                    border: 0,
+                    background: 'transparent',
+                    color: 'inherit',
+                    textAlign: 'left',
+                  }}
+                >
+                  <div className={styles.routineHeader}>
+                    <div>
+                      <span className={isSelected ? styles.activeLabel : styles.cardLabel}>
+                        {isSelected ? 'ROTINA SELECIONADA' : 'ROTINA'}
+                      </span>
+                      <h2>{routine.name}</h2>
+                      <p>{routine.description}</p>
+                    </div>
 
-          <Card>
-            <div className={styles.routineHeader}>
-              <div>
-                <span className={styles.cardLabel}>ROTINA</span>
-                <h2>Lower</h2>
-                <p>Pernas, glúteos e panturrilhas</p>
-              </div>
-              <span className={styles.routineBadge}>B</span>
-            </div>
+                    <span className={styles.routineBadge}>
+                      {String.fromCharCode(65 + index)}
+                    </span>
+                  </div>
 
-            <div className={styles.routineFooter}>
-              <span>6 exercícios</span>
-              <span>•</span>
-              <span>Treino inferior</span>
-            </div>
-          </Card>
+                  <div className={styles.routineFooter}>
+                    <span>{routine.exercises.length} exercícios</span>
+                    <span>•</span>
+                    <span>{routine.category}</span>
+                  </div>
+                </button>
+              </Card>
+            )
+          })}
         </div>
       </section>
 
       <section className={styles.section}>
-        <SectionHeader title="Upper A" action="Editar rotina" />
+        <SectionHeader title={selectedRoutine.name} />
 
-        <div className={styles.exerciseList}>
-          {exercises.map((exercise, index) => (
-            <Card key={exercise.name}>
-              <div className={styles.exercise}>
-                <div className={styles.exerciseNumber}>
-                  {String(index + 1).padStart(2, '0')}
-                </div>
+        {selectedRoutine.exercises.length > 0 ? (
+          <div className={styles.exerciseList}>
+            {selectedRoutine.exercises.map((exercise, index) => (
+              <Card key={exercise.id}>
+                <div className={styles.exercise}>
+                  <div className={styles.exerciseNumber}>
+                    {String(index + 1).padStart(2, '0')}
+                  </div>
 
-                <div className={styles.exerciseInfo}>
-                  <h3>{exercise.name}</h3>
-                  <span>{exercise.muscle}</span>
+                  <div className={styles.exerciseInfo}>
+                    <h3>{exercise.name}</h3>
+                    <span>{exercise.muscle}</span>
 
-                  <div className={styles.exerciseDetails}>
-                    <span>{exercise.sets}</span>
-                    <span>{exercise.reps}</span>
+                    <div className={styles.exerciseDetails}>
+                      <span>{exercise.sets} séries</span>
+                      <span>{exercise.targetReps} reps</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.load}>
+                    <strong>{exercise.referenceWeight} kg</strong>
+                    <span>Última carga</span>
                   </div>
                 </div>
-
-                <div className={styles.load}>
-                  <strong>{exercise.load}</strong>
-                  <span>Última carga</span>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <Card>
+            <p>Esta rotina ainda não possui exercícios cadastrados.</p>
+          </Card>
+        )}
       </section>
     </div>
   )

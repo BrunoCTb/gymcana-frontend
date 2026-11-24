@@ -11,6 +11,11 @@ import {
   Plus,
   X
 } from 'lucide-react'
+import {
+  getRoutines,
+  getRoutineById,
+  getSelectedRoutineId,
+} from '../data/trainingStorage'
 import Card from '../../../components/ui/Card'
 import styles from './WorkoutSessionPage.module.css'
 
@@ -32,6 +37,8 @@ type Exercise = {
 }
 
 type SessionState = {
+  routineId: string
+  routineName: string
   exercises: Exercise[]
   currentExerciseIndex: number
   elapsedSeconds: number
@@ -40,45 +47,27 @@ type SessionState = {
 
 const STORAGE_KEY = 'gymcana-active-workout'
 
-const initialExercises: Exercise[] = [
-  {
-    id: 1,
-    name: 'Supino inclinado com halteres',
-    muscle: 'Peito superior',
-    targetReps: '8–12',
-    sets: [
-      { id: 1, reps: 12, weight: 22, status: 'pending' },
-      { id: 2, reps: 10, weight: 22, status: 'pending' },
-      { id: 3, reps: 8, weight: 22, status: 'pending' },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Puxada alta aberta',
-    muscle: 'Costas',
-    targetReps: '8–12',
-    sets: [
-      { id: 1, reps: 12, weight: 45, status: 'pending' },
-      { id: 2, reps: 10, weight: 45, status: 'pending' },
-      { id: 3, reps: 8, weight: 45, status: 'pending' },
-    ],
-  },
-  {
-    id: 3,
-    name: 'Rosca Scott',
-    muscle: 'Bíceps',
-    targetReps: '8–12',
-    sets: [
-      { id: 1, reps: 12, weight: 20, status: 'pending' },
-      { id: 2, reps: 10, weight: 20, status: 'pending' },
-      { id: 3, reps: 8, weight: 20, status: 'pending' },
-    ],
-  },
-]
 
 function createInitialSession(): SessionState {
+  const routineId = getSelectedRoutineId()
+  const routine =
+    getRoutineById(routineId) ?? getRoutines()[0]
+
   return {
-    exercises: initialExercises,
+    routineId: routine.id,
+    routineName: routine.name,
+    exercises: routine.exercises.map((exercise, index) => ({
+      id: index + 1,
+      name: exercise.name,
+      muscle: exercise.muscle,
+      targetReps: exercise.targetReps,
+      sets: Array.from({ length: exercise.sets }, (_, setIndex) => ({
+        id: setIndex + 1,
+        reps: 10,
+        weight: exercise.referenceWeight,
+        status: 'pending' as SetStatus,
+      })),
+    })),
     currentExerciseIndex: 0,
     elapsedSeconds: 0,
     restSeconds: 0,
@@ -90,7 +79,21 @@ function loadSession(): SessionState {
     const saved = localStorage.getItem(STORAGE_KEY)
 
     if (saved) {
-      return JSON.parse(saved) as SessionState
+      const parsed = JSON.parse(saved) as Partial<SessionState>
+
+      if (Array.isArray(parsed.exercises)) {
+        const routineId = parsed.routineId ?? getSelectedRoutineId()
+        const routine = getRoutineById(routineId)
+
+        return {
+          ...parsed,
+          routineId,
+          routineName: parsed.routineName ?? routine?.name ?? 'Treino',
+          currentExerciseIndex: parsed.currentExerciseIndex ?? 0,
+          elapsedSeconds: parsed.elapsedSeconds ?? 0,
+          restSeconds: parsed.restSeconds ?? 0,
+        } as SessionState
+      }
     }
   } catch {
     localStorage.removeItem(STORAGE_KEY)
@@ -224,29 +227,6 @@ function WorkoutSessionPage() {
     }))
   }
 
-  function addSet() {
-    setSession((current) => ({
-      ...current,
-      exercises: current.exercises.map((exercise) => {
-        if (exercise.id !== currentExercise.id) return exercise
-
-        const lastSet = exercise.sets.at(-1)
-
-        return {
-          ...exercise,
-          sets: [
-            ...exercise.sets,
-            {
-              id: Math.max(0, ...exercise.sets.map((set) => set.id)) + 1,
-              reps: lastSet?.reps ?? 10,
-              weight: lastSet?.weight ?? 0,
-              status: 'pending',
-            },
-          ],
-        }
-      }),
-    }))
-  }
 
   function changeExercise(direction: number) {
     const nextIndex = session.currentExerciseIndex + direction
@@ -313,7 +293,23 @@ function WorkoutSessionPage() {
     )
   }
 
-  if (!currentExercise) return null
+  if (!currentExercise) {
+  return (
+    <div className={styles.page}>
+      <Card className={styles.finishedCard}>
+        <h2>Rotina sem exercícios</h2>
+        <p>Adicione exercícios à rotina antes de iniciar o treino.</p>
+        <button
+          type="button"
+          className={styles.primaryButton}
+          onClick={() => navigate('/training')}
+        >
+          Voltar para Treino
+        </button>
+      </Card>
+    </div>
+  )
+}
 
   return (
     <div className={styles.page}>
@@ -328,7 +324,7 @@ function WorkoutSessionPage() {
         </button>
 
         <div className={styles.topInfo}>
-          <strong>UPPER A</strong>
+          <strong>{session.routineName.toUpperCase()}</strong>
           <span>{formatTime(session.elapsedSeconds)}</span>
         </div>
 
@@ -445,10 +441,6 @@ function WorkoutSessionPage() {
             </button>
 
             <div className={styles.secondaryActions}>
-              <button type="button" onClick={addSet}>
-                <Plus size={16} />
-                Adicionar série
-              </button>
               <button type="button" onClick={skipSet}>
                 <Minus size={16} />
                 Pular série
