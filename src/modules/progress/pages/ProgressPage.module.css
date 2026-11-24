@@ -262,3 +262,137 @@
     font-size: 10px;
   }
 }
+
+.workoutHistoryCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.workoutHistoryItem + .workoutHistoryItem {
+  border-top: 1px solid var(--color-border);
+}
+
+.workoutHistoryButton {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  text-align: left;
+}
+
+.workoutHistoryItem:first-child .workoutHistoryButton {
+  padding-top: 0;
+}
+
+.workoutHistoryItem:last-child .workoutHistoryButton {
+  padding-bottom: 0;
+}
+
+.workoutHistoryInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.workoutHistoryInfo strong {
+  font-size: 14px;
+}
+
+.workoutHistoryInfo span,
+.workoutHistoryAction > span {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.workoutHistoryAction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-muted);
+}
+
+.workoutHistoryAction svg {
+  transition: transform 160ms ease;
+}
+
+.expandedIcon {
+  transform: rotate(180deg);
+}
+
+.workoutDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 4px 0 16px;
+}
+
+.workoutExercise {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.workoutExerciseHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.workoutExerciseHeader strong {
+  font-size: 13px;
+}
+
+.workoutExerciseHeader span {
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.workoutSetList {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-left: 10px;
+  border-left: 2px solid var(--color-border);
+}
+
+.workoutSet {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.workoutSet > span:first-child {
+  color: var(--color-text-muted);
+}
+
+.workoutSet strong {
+  font-size: 12px;
+}
+
+.uncompletedSet {
+  color: var(--color-text-subtle);
+  font-size: 11px;
+}
+
+.emptyHistory {
+  padding: 12px 0;
+}
+
+.emptyHistory > span {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.emptyHistory p {
+  margin: 6px 0 0;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}

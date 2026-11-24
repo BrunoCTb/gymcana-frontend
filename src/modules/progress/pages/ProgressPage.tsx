@@ -12,6 +12,11 @@ import {
 import Card from '../../../components/ui/Card'
 import SectionHeader from '../../../components/ui/SectionHeader'
 import styles from './ProgressPage.module.css'
+import { ChevronDown } from 'lucide-react'
+import {
+  getWorkoutHistory,
+  type WorkoutHistoryEntry,
+} from '../../training/data/trainingHistory'
 
 const weightHistory = [
   { date: '01/10', weight: 72.4 },
@@ -31,16 +36,25 @@ const measurements = [
   { name: 'Panturrilha', value: '38 cm', date: '12/11/2026' },
 ]
 
-const assessments = [
-  { date: '12 nov 2026', title: 'Avaliação corporal', description: 'Peso e medidas atualizados' },
-  { date: '29 out 2026', title: 'Avaliação corporal', description: 'Peso e medidas atualizados' },
-  { date: '15 out 2026', title: 'Avaliação corporal', description: 'Primeiro registro do período' },
-]
-
 type Period = '1M' | '3M' | '6M' | '1A'
+
+function formatWorkoutDate(date: string) {
+  return new Date(date).toLocaleDateString('pt-BR', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  })
+}
+
+function formatWorkoutDuration(seconds: number) {
+  const minutes = Math.floor(seconds / 60)
+  return `${minutes} min`
+}
 
 function ProgressPage() {
   const [period, setPeriod] = useState<Period>('1M')
+  const [workoutHistory] = useState<WorkoutHistoryEntry[]>(getWorkoutHistory)
+  const [expandedWorkout, setExpandedWorkout] = useState<string | null>(null)
 
   return (
     <div className={styles.page}>
@@ -155,18 +169,96 @@ function ProgressPage() {
       </section>
 
       <section className={styles.section}>
-        <SectionHeader title="Registros anteriores" action="Ver histórico" />
-        <Card className={styles.historyCard}>
-          {assessments.map((assessment) => (
-            <div className={styles.historyRow} key={assessment.date}>
-              <div className={styles.historyMarker} />
-              <div className={styles.historyContent}>
-                <strong>{assessment.title}</strong>
-                <span>{assessment.description}</span>
-              </div>
-              <time>{assessment.date}</time>
+        <SectionHeader title="Histórico de treinos" />
+
+        <Card className={styles.workoutHistoryCard}>
+          {workoutHistory.length > 0 ? (
+            workoutHistory.map((workout) => {
+              const isExpanded = expandedWorkout === workout.id
+
+              return (
+                <div className={styles.workoutHistoryItem} key={workout.id}>
+                  <button
+                    type="button"
+                    className={styles.workoutHistoryButton}
+                    onClick={() =>
+                      setExpandedWorkout(isExpanded ? null : workout.id)
+                    }
+                    aria-expanded={isExpanded}
+                  >
+                    <div className={styles.workoutHistoryInfo}>
+                      <strong>{workout.routineName}</strong>
+
+                      <span>
+                        {formatWorkoutDate(workout.completedAt)}
+                      </span>
+
+                      <span>
+                        {workout.completedSets} séries concluídas
+                        {' · '}
+                        {formatWorkoutDuration(workout.durationSeconds)}
+                      </span>
+                    </div>
+
+                    <div className={styles.workoutHistoryAction}>
+                      <span>{workout.exercises.length} exercícios</span>
+                      <ChevronDown
+                        size={18}
+                        className={isExpanded ? styles.expandedIcon : ''}
+                      />
+                    </div>
+                  </button>
+
+                  {isExpanded && (
+                    <div className={styles.workoutDetails}>
+                      {workout.exercises.map((exercise) => (
+                        <div
+                          className={styles.workoutExercise}
+                          key={exercise.id}
+                        >
+                          <div className={styles.workoutExerciseHeader}>
+                            <strong>{exercise.name}</strong>
+                            <span>{exercise.muscle}</span>
+                          </div>
+
+                          <div className={styles.workoutSetList}>
+                            {exercise.sets.map((set, index) => (
+                              <div
+                                className={styles.workoutSet}
+                                key={set.id}
+                              >
+                                <span>Série {index + 1}</span>
+
+                                {set.status === 'completed' ? (
+                                  <strong>
+                                    {set.weight} kg × {set.reps} reps
+                                  </strong>
+                                ) : (
+                                  <span className={styles.uncompletedSet}>
+                                    {set.status === 'skipped'
+                                      ? 'Série pulada'
+                                      : 'Não realizada'}
+                                  </span>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )
+            })
+          ) : (
+            <div className={styles.emptyHistory}>
+              <span>Nenhum treino registrado ainda.</span>
+              <p>
+                Seus treinos concluídos aparecerão aqui para você acompanhar
+                sua evolução.
+              </p>
             </div>
-          ))}
+          )}
         </Card>
       </section>
     </div>
