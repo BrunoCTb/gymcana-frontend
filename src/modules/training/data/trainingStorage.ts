@@ -10,9 +10,9 @@ export type RoutineExercise = {
   exerciseId: string
   name: string
   muscle: string
-  targetReps: string
+  targetReps?: string
   sets: number
-  referenceWeight: number
+  referenceWeight?: number
 }
 
 export type Routine = {

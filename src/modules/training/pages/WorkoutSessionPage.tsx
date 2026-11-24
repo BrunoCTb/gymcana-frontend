@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import {
@@ -19,22 +18,15 @@ import {
 import Card from '../../../components/ui/Card'
 import styles from './WorkoutSessionPage.module.css'
 import { saveCompletedWorkout } from '../data/trainingHistory'
-
-type SetStatus = 'pending' | 'completed' | 'skipped'
-
-type WorkoutSet = {
-  id: number
-  reps: number
-  weight: number
-  status: SetStatus
-}
+import type { WorkoutSet } from '../data/trainingTypes'
 
 type Exercise = {
   id: number
   exerciseId: string
   name: string
   muscle: string
-  targetReps: string
+  targetReps?: string
+  referenceWeight?: number
   sets: WorkoutSet[]
 }
 
@@ -58,17 +50,21 @@ function createInitialSession(): SessionState {
   return {
     routineId: routine.id,
     routineName: routine.name,
+    
     exercises: routine.exercises.map((exercise, index) => ({
       id: index + 1,
       exerciseId: exercise.exerciseId,
       name: exercise.name,
       muscle: exercise.muscle,
       targetReps: exercise.targetReps,
+      referenceWeight: exercise.referenceWeight,
       sets: Array.from({ length: exercise.sets }, (_, setIndex) => ({
         id: setIndex + 1,
-        reps: 10,
-        weight: exercise.referenceWeight,
-        status: 'pending' as SetStatus,
+        type: 'working' as const,
+        reps: 0,
+        weight: exercise.referenceWeight ?? 0,
+        notes: '',
+        status: 'pending' as const,
       })),
     })),
     currentExerciseIndex: 0,
@@ -106,6 +102,17 @@ function loadSession(): SessionState {
               ...exercise,
               exerciseId:
                 exercise.exerciseId ?? matchingExercise?.exerciseId ?? '',
+              referenceWeight:
+                exercise.referenceWeight ?? matchingExercise?.referenceWeight,
+              sets: (exercise.sets ?? []).map((set, index) => ({
+                ...set,
+                id: set.id ?? index + 1,
+                type: set.type ?? 'working',
+                reps: set.reps ?? 0,
+                weight: set.weight ?? 0,
+                notes: set.notes ?? '',
+                status: set.status ?? 'pending',
+              })),
             }
           }),
         } as SessionState
@@ -134,6 +141,7 @@ function WorkoutSessionPage() {
   const [showExit, setShowExit] = useState(false)
   const [formWeight, setFormWeight] = useState(0)
   const [formReps, setFormReps] = useState(0)
+  const [formNotes, setFormNotes] = useState('')
   const [finished, setFinished] = useState(false)
 
   const currentExercise =
@@ -193,6 +201,7 @@ function WorkoutSessionPage() {
     setFormWeight(currentSet.weight)
     setFormReps(currentSet.reps)
     setShowRegistration(true)
+    setFormNotes(currentSet.notes)
   }
 
   function registerSet() {
@@ -211,11 +220,13 @@ function WorkoutSessionPage() {
                       weight: formWeight,
                       reps: formReps,
                       status: 'completed',
+                      notes: formNotes,
                     }
                   : set,
               ),
             }
           : exercise,
+          
       ),
       restSeconds: 90,
     }))
@@ -411,11 +422,17 @@ function WorkoutSessionPage() {
 
           {currentSet ? (
             <>
-              <strong className={styles.repTarget}>{currentExercise.targetReps}</strong>
+              <strong className={styles.repTarget}>
+                {currentExercise.targetReps || 'Livre'}
+              </strong>
               <span className={styles.repLabel}>REPETIÇÕES</span>
               <div className={styles.weightReference}>
                 <Dumbbell size={17} />
-                <strong>{currentSet.weight} kg</strong>
+                <strong>
+                  {currentExercise.referenceWeight !== undefined
+                    ? `${currentExercise.referenceWeight} kg`
+                    : 'Não definida'}
+                </strong>
                 <span>carga de referência</span>
               </div>
             </>
@@ -515,7 +532,7 @@ function WorkoutSessionPage() {
             </div>
 
             <p className={styles.modalDescription}>
-              Meta: {currentExercise.targetReps} repetições
+              Meta: {currentExercise.targetReps || 'Não definida'}
             </p>
 
             <div className={styles.formFields}>
@@ -571,6 +588,18 @@ function WorkoutSessionPage() {
                   </button>
                 </div>
               </label>
+
+              
+              <label>
+                Observações da série
+                <textarea
+                  value={formNotes}
+                  onChange={(event) => setFormNotes(event.target.value)}
+                  placeholder="Ex.: 2 parciais no final, ajuda nas últimas reps..."
+                  rows={3}
+                />
+              </label>
+
             </div>
 
             <button

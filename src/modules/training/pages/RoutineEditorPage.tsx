@@ -40,9 +40,9 @@ function RoutineEditorPage() {
   const [library, setLibrary] = useState(getExerciseLibrary)
   const [search, setSearch] = useState('')
   const [selectedExercise, setSelectedExercise] = useState('')
-  const [sets, setSets] = useState(3)
-  const [reps, setReps] = useState('8–12')
-  const [weight, setWeight] = useState(0)
+    const [sets, setSets] = useState(3)
+    const [reps, setReps] = useState('')
+    const [weight, setWeight] = useState<number | ''>('')
 
   const [customName, setCustomName] = useState('')
   const [customMuscle, setCustomMuscle] = useState('')
@@ -73,9 +73,9 @@ function RoutineEditorPage() {
       exerciseId: exercise.id,
       name: exercise.name,
       muscle: exercise.muscle,
-      targetReps: reps,
+      targetReps: reps.trim() || undefined,
       sets,
-      referenceWeight: weight,
+      referenceWeight: weight === '' ? undefined : weight,
     }
 
     setRoutine((current) => ({
@@ -284,31 +284,36 @@ function RoutineEditorPage() {
                 />
               </label>
 
+              
               <label>
                 Repetições
                 <input
                   value={reps}
                   onChange={(event) => setReps(event.target.value)}
-                  placeholder="8–12"
+                  placeholder="Opcional. Ex.: 8–12"
                 />
               </label>
 
               <label>
-                Carga (kg)
+                Carga de referência (kg)
                 <input
                   type="number"
                   min="0"
                   step="0.5"
                   value={weight}
-                  onChange={(event) => setWeight(Number(event.target.value))}
+                  onChange={(event) =>
+                    setWeight(event.target.value === '' ? '' : Number(event.target.value))
+                  }
+                  placeholder="Opcional"
                 />
               </label>
+
             </div>
 
             <button
               type="button"
               className={styles.primaryButton}
-              disabled={!selectedLibraryExercise || sets < 1 || !reps.trim() || weight < 0}
+              disabled={!selectedLibraryExercise || sets < 1}
               onClick={() => selectedLibraryExercise && addExercise(selectedLibraryExercise)}
             >
               <Plus size={17} />
@@ -348,8 +353,9 @@ function RoutineEditorPage() {
                 <button
                   type="button"
                   className={styles.primaryButton}
-                  disabled={!customName.trim() || !customMuscle.trim() || sets < 1 || !reps.trim() || weight < 0}
+                  disabled={!customName.trim() || !customMuscle.trim() || sets < 1}
                   onClick={createCustomExercise}
+                  
                 >
                   Criar e adicionar
                 </button>
@@ -375,8 +381,14 @@ function RoutineEditorPage() {
                     <strong>{index + 1}. {exercise.name}</strong>
                     <span>{exercise.muscle}</span>
                     <span>
-                      {exercise.sets} séries · {exercise.targetReps} reps · {exercise.referenceWeight} kg
-                    </span>
+                      {exercise.sets} séries
+                      {' · '}
+                      {exercise.targetReps || 'Reps não definidas'}
+                      {' · '}
+                      {exercise.referenceWeight !== undefined
+                        ? `${exercise.referenceWeight} kg`
+                        : 'Carga não definida'}
+                  </span>
                   </div>
 
                   <div className={styles.exerciseActions}>

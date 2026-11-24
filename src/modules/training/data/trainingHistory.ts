@@ -1,11 +1,10 @@
+
 import { getRoutines } from './trainingStorage'
 import { getExerciseLibrary } from './exerciseLibrary'
-
-export type WorkoutSetStatus = 'pending' | 'completed' | 'skipped'
+import type { WorkoutSet } from './trainingTypes'
 
 export type WorkoutHistoryEntry = {
   id: string
-  // exerciseId?: string
   routineId: string
   routineName: string
   completedAt: string
@@ -18,17 +17,24 @@ export type WorkoutHistoryEntry = {
     exerciseId?: string
     name: string
     muscle: string
-    targetReps: string
-    sets: {
-      id: number
-      reps: number
-      weight: number
-      status: WorkoutSetStatus
-    }[]
+    targetReps?: string
+    sets: WorkoutSet[]
   }[]
 }
 
 const HISTORY_KEY = 'gymcana-workout-history'
+
+function normalizeSet(set: Partial<WorkoutSet>, index: number): WorkoutSet {
+  return {
+    id: set.id ?? index + 1,
+    type: set.type ?? 'working',
+    typeLabel: set.typeLabel,
+    reps: set.reps ?? 0,
+    weight: set.weight ?? 0,
+    notes: set.notes ?? '',
+    status: set.status ?? 'pending',
+  }
+}
 
 export function getWorkoutHistory(): WorkoutHistoryEntry[] {
   try {
@@ -45,42 +51,60 @@ export function getWorkoutHistory(): WorkoutHistoryEntry[] {
 
     let changed = false
 
-    const normalized = (parsed as WorkoutHistoryEntry[]).map((workout) => {
+    const normalized = parsed.map((workout) => {
       const routine = routines.find(
         (item) => item.id === workout.routineId,
       )
 
       return {
         ...workout,
-        exercises: workout.exercises.map((exercise) => {
-          if (exercise.exerciseId) return exercise
+        exercises: (workout.exercises ?? []).map((exercise: WorkoutHistoryEntry['exercises'][number]) => {
+          let exerciseId = exercise.exerciseId
 
-          const routineExercise = routine?.exercises.find(
-            (item) =>
-              item.name === exercise.name &&
-              item.muscle === exercise.muscle,
+          if (!exerciseId) {
+            const routineExercise = routine?.exercises.find(
+              (item) =>
+                item.name === exercise.name &&
+                item.muscle === exercise.muscle,
+            )
+
+            const libraryExercise = library.find(
+              (item) =>
+                item.name.trim().toLowerCase() === exercise.name.trim().toLowerCase() &&
+                item.muscle.trim().toLowerCase() === exercise.muscle.trim().toLowerCase(),
+            )
+
+            exerciseId =
+              routineExercise?.exerciseId ?? libraryExercise?.id
+
+            if (exerciseId) changed = true
+          }
+
+          const sets = (exercise.sets ?? []).map(
+            (set: Partial<WorkoutSet>, index: number) => {
+              const normalizedSet = normalizeSet(set, index)
+
+              if (
+                set.type === undefined ||
+                set.notes === undefined ||
+                set.reps === undefined ||
+                set.weight === undefined
+              ) {
+                changed = true
+              }
+
+              return normalizedSet
+            },
           )
-
-          const libraryExercise = library.find(
-            (item) =>
-              item.name.trim().toLowerCase() === exercise.name.trim().toLowerCase() &&
-              item.muscle.trim().toLowerCase() === exercise.muscle.trim().toLowerCase(),
-          )
-
-          const exerciseId =
-            routineExercise?.exerciseId ?? libraryExercise?.id
-
-          if (!exerciseId) return exercise
-
-          changed = true
 
           return {
             ...exercise,
             exerciseId,
+            sets,
           }
         }),
       }
-    })
+    }) as WorkoutHistoryEntry[]
 
     if (changed) {
       localStorage.setItem(HISTORY_KEY, JSON.stringify(normalized))
@@ -127,7 +151,7 @@ export function saveCompletedWorkout(session: CompletedWorkoutInput) {
     completedSets,
     skippedSets,
     exercises: session.exercises,
-    }
+  }
 
   const history = getWorkoutHistory()
 
@@ -138,8 +162,6 @@ export function saveCompletedWorkout(session: CompletedWorkoutInput) {
 
   return entry
 }
-
-
 
 export type ExerciseHistorySummary = {
   exerciseId: string
@@ -153,9 +175,8 @@ export type ExerciseHistoryRecord = {
   workoutId: string
   routineName: string
   completedAt: string
-  sets: WorkoutHistoryEntry['exercises'][number]['sets']
+  sets: WorkoutSet[]
 }
-
 
 export function getExercisesWithHistory(): ExerciseHistorySummary[] {
   const history = getWorkoutHistory()
@@ -225,5 +246,3 @@ export function getExerciseHistory(
       }
     })
 }
-
-
