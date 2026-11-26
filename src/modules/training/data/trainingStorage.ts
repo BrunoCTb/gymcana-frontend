@@ -1,4 +1,4 @@
-
+import type { WorkoutSetType } from './trainingTypes'
 import {
   getExerciseLibrary,
   saveExerciseLibrary,
@@ -12,6 +12,8 @@ export type RoutineExercise = {
   muscle: string
   targetReps?: string
   sets: number
+  setTypes?: WorkoutSetType[]
+  setTypeLabels?: string[]
   referenceWeight?: number
 }
 
@@ -121,13 +123,24 @@ function normalizeRoutines(routines: Routine[]): Routine[] {
         }
       }
 
-      if (exercise.exerciseId !== exerciseId) {
+      const setTypes = Array.from(
+      { length: exercise.sets },
+      (_, index) => exercise.setTypes?.[index] ?? 'working',
+      )
+
+      if (
+        exercise.exerciseId !== exerciseId ||
+        !exercise.setTypes ||
+        exercise.setTypes.length !== exercise.sets ||
+        exercise.setTypes.some((type, index) => type !== setTypes[index])
+      ) {
         routinesChanged = true
       }
 
       return {
         ...exercise,
         exerciseId,
+        setTypes,
       }
     }),
   }))

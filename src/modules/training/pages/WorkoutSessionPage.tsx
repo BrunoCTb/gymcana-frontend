@@ -60,7 +60,7 @@ function createInitialSession(): SessionState {
       referenceWeight: exercise.referenceWeight,
       sets: Array.from({ length: exercise.sets }, (_, setIndex) => ({
         id: setIndex + 1,
-        type: 'working' as const,
+        type: exercise.setTypes?.[setIndex] ?? 'working',
         reps: 0,
         weight: exercise.referenceWeight ?? 0,
         notes: '',
@@ -107,7 +107,7 @@ function loadSession(): SessionState {
               sets: (exercise.sets ?? []).map((set, index) => ({
                 ...set,
                 id: set.id ?? index + 1,
-                type: set.type ?? 'working',
+                type: set.type ?? matchingExercise?.setTypes?.[index] ?? 'working',
                 reps: set.reps ?? 0,
                 weight: set.weight ?? 0,
                 notes: set.notes ?? '',

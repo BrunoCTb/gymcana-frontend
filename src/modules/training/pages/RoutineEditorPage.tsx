@@ -1,4 +1,4 @@
-
+import type { WorkoutSetType } from '../data/trainingTypes'
 import { useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { ArrowDown, ArrowLeft, ArrowUp, Plus, Trash2 } from 'lucide-react'
@@ -40,10 +40,11 @@ function RoutineEditorPage() {
   const [library, setLibrary] = useState(getExerciseLibrary)
   const [search, setSearch] = useState('')
   const [selectedExercise, setSelectedExercise] = useState('')
-    const [sets, setSets] = useState(3)
-    const [reps, setReps] = useState('')
-    const [weight, setWeight] = useState<number | ''>('')
-
+  const [sets, setSets] = useState(3)
+  const [reps, setReps] = useState('')
+  const [weight, setWeight] = useState<number | ''>('')
+  const [setTypes, setSetTypes] = useState<WorkoutSetType[]>(Array(3).fill('working'),)
+  const [setTypeLabels, setSetTypeLabels] = useState<string[]>(Array(3).fill(''),)
   const [customName, setCustomName] = useState('')
   const [customMuscle, setCustomMuscle] = useState('')
   const [showCustomForm, setShowCustomForm] = useState(false)
@@ -67,6 +68,26 @@ function RoutineEditorPage() {
     )
   }
 
+  function updateSetCount(value: number) {
+    const nextSets = Math.max(1, Math.min(20, value || 1))
+
+    setSets(nextSets)
+
+    setSetTypes((current) =>
+      Array.from(
+        { length: nextSets },
+        (_, index) => current[index] ?? 'working',
+      ),
+    )
+
+    setSetTypeLabels((current) =>
+      Array.from(
+        { length: nextSets },
+        (_, index) => current[index] ?? '',
+      ),
+    )
+  }
+
   function addExercise(exercise: LibraryExercise) {
     const newExercise: RoutineExercise = {
       id: crypto.randomUUID(),
@@ -75,6 +96,8 @@ function RoutineEditorPage() {
       muscle: exercise.muscle,
       targetReps: reps.trim() || undefined,
       sets,
+      setTypes,
+      setTypeLabels,
       referenceWeight: weight === '' ? undefined : weight,
     }
 
@@ -88,6 +111,8 @@ function RoutineEditorPage() {
     setSets(3)
     setReps('8–12')
     setWeight(0)
+    setSetTypes(Array(3).fill('working'))
+    setSetTypeLabels(Array(3).fill(''))
   }
 
   function createCustomExercise() {
@@ -273,6 +298,41 @@ function RoutineEditorPage() {
             </label>
 
             <div className={styles.parameters}>
+              {Array.from({ length: sets }, (_, index) => (
+              <label key={index}>
+                Série {index + 1}
+                <select
+                  value={setTypes[index] ?? 'working'}
+                  onChange={(event) =>
+                    setSetTypes((current) =>
+                      current.map((type, i) =>
+                        i === index
+                          ? (event.target.value as WorkoutSetType)
+                          : type,
+                      ),
+                    )
+                  }
+                >
+                  <option value="warmup">Aquecimento</option>
+                  <option value="preparation">Preparação</option>
+                  <option value="working">Trabalho</option>
+                  <option value="custom">Personalizada</option>
+                </select>
+
+                <input
+                  value={setTypeLabels[index] ?? ''}
+                  onChange={(event) =>
+                    setSetTypeLabels((current) =>
+                      current.map((label, i) =>
+                        i === index ? event.target.value : label,
+                      ),
+                    )
+                  }
+                  placeholder="Nome opcional (ex.: Aquecimento 1)"
+                />
+              </label>
+              ))}
+
               <label>
                 Séries
                 <input
@@ -280,7 +340,7 @@ function RoutineEditorPage() {
                   min="1"
                   max="20"
                   value={sets}
-                  onChange={(event) => setSets(Number(event.target.value))}
+                  onChange={(event) => updateSetCount(Number(event.target.value))}
                 />
               </label>
 
@@ -388,7 +448,7 @@ function RoutineEditorPage() {
                       {exercise.referenceWeight !== undefined
                         ? `${exercise.referenceWeight} kg`
                         : 'Carga não definida'}
-                  </span>
+                    </span>
                   </div>
 
                   <div className={styles.exerciseActions}>
